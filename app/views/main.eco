@@ -1,3 +1,5 @@
 <div id="main">
 	<canvas id="mainCanvas" width="200" height="200"></canvas>
+	<canvas id="fitCanvas" width="200" height="200"></canvas>
+	<canvas id="resCanvas" width="200" height="200"></canvas>
 </div>
