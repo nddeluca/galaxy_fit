@@ -11,18 +11,19 @@ class FitImage extends Spine.Model
   init: ->
     fits = new FITS.File(@file)
     @image = fits.getDataUnit()
-    @data = @getData()
+    @data = @image.getFrame()
     [@min,@max] = @getExtremes()
     @range = @max - @min
 
-  getData: ->
-    return @image.getFrame()
-
   getPixel: (x,y) ->
     return @image.getPixel(x,y)
+      
+  #Map pixel to [0,1] interval
+  getNormalizedPixel: (x,y) ->
+    return (@image.getPixel(x,y) - @min) / @range
 
   getRGBValue: (x,y) ->
-    r = Math.round(255*(@image.getPixel(x,y) - @min) / @range)
+    r = Math.round(255*@getNormalizedPixel(x,y))
     return "rgb(#{r},#{r},#{r})"
 
   getExtremes: ->
