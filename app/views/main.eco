@@ -1,0 +1,3 @@
+<div id="main">
+	<canvas id="mainCanvas" width="200" height="200"></canvas>
+</div>

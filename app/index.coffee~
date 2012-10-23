@@ -1,0 +1,49 @@
+require('lib/setup')
+FITS = require('fits')
+
+Spine = require('spine')
+
+class App extends Spine.Controller
+  constructor: ->
+    super
+
+    xhr = new XMLHttpRequest()
+    xhr.open('GET', 'images/simulated_ellipse.fits')
+    xhr.responseType = 'arraybuffer'
+		
+    xhr.send()
+    @render()
+
+    xhr.onload = (e) ->
+      c = document.getElementById('mainCanvas')
+      ctx=c.getContext("2d")
+
+      fits = new FITS.File(xhr.response)
+      console.log fits.getDataUnit()
+      image = fits.getDataUnit()
+      data = image.getFrame()
+
+      FindMax = (array) ->
+        return Math.max.apply(Math,array)
+      FindMin = (array) ->
+        return Math.min.apply(Math,array)
+
+      max = FindMax(data)
+      min = FindMin(data)
+      range = max - min
+      console.log range
+      console.log min
+
+      for x in [0..199]
+        for y in [0..199]
+          pixel = image.getPixel(x, y)
+          pixel = 255 * (pixel - min) / range
+          r = Math.round(image.getPixel(x,y))
+          ctx.fillStyle = "rgb(#{r},#{r},#{r})"
+          ctx.fillRect(x,y,1,1)          
+
+  render: =>
+    @html require('views/main')
+
+module.exports = App
+    
