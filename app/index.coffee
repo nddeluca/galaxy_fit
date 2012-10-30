@@ -10,22 +10,28 @@ class App extends Spine.Controller
     super
 
     xhr = new XMLHttpRequest()
-    xhr.open('GET', 'images/simulated_ellipse.fits')
+    xhr.open('GET', 'images/ell1_cutout.fits')
     xhr.responseType = 'arraybuffer'
 		
     xhr.send()
     @render()
 
     xhr.onload = (e) ->
-      c = document.getElementById('mainCanvas')
-      ctx=c.getContext("2d")
+      fits = new FITS.File(xhr.response)
 
-      img = new FitImage(xhr.response)
+      container = document.getElementById('canvasContainer')
+      canvas = document.createElement('canvas')
+      container.appendChild(canvas)
+      ctx=canvas.getContext('2d')
 
-      for x in [0..199]
-        for y in [0..199]
-          ctx.fillStyle = img.getRGBValue(x,y)
-          ctx.fillRect(x,y,1,1)
+      img = new FitImage(fits,ctx)
+      scale = 8
+      canvas.width = img.image.width*scale
+      canvas.height = img.image.height*scale
+      imageData = img.getImageData()
+      scaledData = img.scaleImageData(imageData,scale)
+      console.log scaledData
+      ctx.putImageData(scaledData,0,0)
 
   render: =>
     @html require('views/main')
