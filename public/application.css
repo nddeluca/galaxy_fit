@@ -1,0 +1,12 @@
+#imageContainer {
+  float: left;
+  padding: 10px;
+}
+#modelContainer {
+  float: left;
+  padding: 10px;
+}
+#residualContainer {
+  float: left;
+  padding: 10px;
+}

@@ -1,2 +1,7 @@
-<div id="canvasContainer">
+<div id="imageContainer">
 </div>
+<div id="modelContainer">
+</div>
+<div id="residualContainer">
+</div>
+
